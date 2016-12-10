@@ -28,10 +28,12 @@ void draw(
 
 	for ( std::size_t i = 0; i < HEIGHT; i++ ) {
 		for ( std::size_t j = 0; j < WIDTH; j++ ) {
+			const char density{std::to_string(world.lifeDensityAt(j,i))[0]};
+
 			if ( world.isLifeAt(j,i) ) {
-				tb_change_cell(x+j, y+i, 0x2588, TB_BLACK, TB_GREEN);
+				tb_change_cell(x+j, y+i, density, TB_BLACK, TB_GREEN);
 			} else {
-				tb_change_cell(x+j, y+i, 0x2591, TB_BLACK, TB_BLUE);
+				tb_change_cell(x+j, y+i, density, TB_BLACK, TB_BLUE);
 			}
 		}
 	}
