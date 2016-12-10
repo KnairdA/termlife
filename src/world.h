@@ -6,8 +6,6 @@
 #include <tuple>
 #include <cstdint>
 
-#include <termbox.h>
-
 namespace life {
 
 template<
@@ -24,15 +22,7 @@ class World {
 			}
 		}
 
-		void summonLifeAt(std::size_t x, std::size_t y) {
-			this->matrix_[y][x] = true;
-		}
-
-		void extinguishLifeAt(std::size_t x, std::size_t y) {
-			this->matrix_[y][x] = false;
-		}
-
-		bool isLifeAt(std::ptrdiff_t x, std::ptrdiff_t y) {
+		bool isLifeAt(std::ptrdiff_t x, std::ptrdiff_t y) const {
 			if ( x >= 0      &&
 			     x <  WIDTH  &&
 			     y >= 0      &&
@@ -43,7 +33,7 @@ class World {
 			}
 		}
 
-		std::uint8_t lifeDensityAt(std::size_t x, std::size_t y) {
+		std::uint8_t lifeDensityAt(std::size_t x, std::size_t y) const {
 			std::uint8_t counter = 0;
 
 			if ( this->isLifeAt(x - 1, y) ) {
@@ -72,6 +62,18 @@ class World {
 			}
 
 			return counter;
+		}
+
+		std::size_t getAge() const {
+			return this->age_;
+		}
+
+		void summonLifeAt(std::size_t x, std::size_t y) {
+			this->matrix_[y][x] = true;
+		}
+
+		void extinguishLifeAt(std::size_t x, std::size_t y) {
+			this->matrix_[y][x] = false;
 		}
 
 		void tick() {
@@ -116,22 +118,6 @@ class World {
 				
 				updates.pop();
 			}
-		}
-
-		void draw() {
-			tb_clear();
-
-			for ( std::size_t j = 0; j < HEIGHT; j++ ) {
-				for ( std::size_t i = 0; i < WIDTH; i++ ) {
-					if ( this->matrix_[j][i] ) {
-						tb_change_cell(i, j, 0x2588, TB_BLACK, TB_GREEN);
-					} else {
-						tb_change_cell(i, j, 0x2591, TB_BLACK, TB_BLUE);
-					}
-				}
-			}
-
-			tb_present();
 		}
 
 	private:
