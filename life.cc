@@ -28,10 +28,10 @@ void draw(
 
 	for ( std::size_t i = 0; i < HEIGHT; i++ ) {
 		for ( std::size_t j = 0; j < WIDTH; j++ ) {
-			if ( world.isLifeAt(i,j) ) {
-				tb_change_cell(x+i, y+j, 0x2588, TB_BLACK, TB_GREEN);
+			if ( world.isLifeAt(j,i) ) {
+				tb_change_cell(x+j, y+i, 0x2588, TB_BLACK, TB_GREEN);
 			} else {
-				tb_change_cell(x+i, y+j, 0x2591, TB_BLACK, TB_BLUE);
+				tb_change_cell(x+j, y+i, 0x2591, TB_BLACK, TB_BLUE);
 			}
 		}
 	}
@@ -48,10 +48,10 @@ int main(int, char*[]) {
 	tb_select_output_mode(TB_OUTPUT_NORMAL);
 	tb_select_input_mode(TB_INPUT_ESC | TB_INPUT_MOUSE);
 
-	life::World<20,20> world;
+	life::World<40,20> world;
 
-	std::size_t worldOffsetX = tb_width()  / 2 - 10;
-	std::size_t worldOffsetY = tb_height() / 2 - 10;
+	std::size_t worldOffsetX = tb_width()  / 2 - world.width  / 2;
+	std::size_t worldOffsetY = tb_height() / 2 - world.height / 2;
 
 	draw(worldOffsetX, worldOffsetY, world);
 
@@ -88,8 +88,8 @@ int main(int, char*[]) {
 				}
 				break;
 			case TB_EVENT_RESIZE:
-				worldOffsetX = ev.w / 2 - 10;
-				worldOffsetY = ev.h / 2 - 10;
+				worldOffsetX = ev.w / 2 - world.width  / 2;
+				worldOffsetY = ev.h / 2 - world.height / 2;
 				break;
 		}
 
