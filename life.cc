@@ -77,7 +77,14 @@ int main(int, char*[]) {
 				break;
 			case TB_EVENT_MOUSE:
 				if ( ev.key == TB_KEY_MOUSE_LEFT ) {
-					world.summonLifeAt(ev.x - worldOffsetX, ev.y - worldOffsetY);
+					const std::size_t x = ev.x - worldOffsetX;
+					const std::size_t y = ev.y - worldOffsetY;
+
+					if ( world.isLifeAt(x, y) ) {
+						world.extinguishLifeAt(x, y);
+					} else {
+						world.summonLifeAt(x, y);
+					}
 				}
 				break;
 			case TB_EVENT_RESIZE:
