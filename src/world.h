@@ -69,11 +69,21 @@ class World {
 		}
 
 		void summonLifeAt(std::size_t x, std::size_t y) {
-			this->matrix_[y][x] = true;
+			if ( x >= 0      &&
+			     x <  WIDTH  &&
+			     y >= 0      &&
+			     y <  HEIGHT ) {
+				this->matrix_[y][x] = true;
+			}
 		}
 
 		void extinguishLifeAt(std::size_t x, std::size_t y) {
-			this->matrix_[y][x] = false;
+			if ( x >= 0      &&
+			     x <  WIDTH  &&
+			     y >= 0      &&
+			     y <  HEIGHT ) {
+				this->matrix_[y][x] = false;
+			}
 		}
 
 		void tick() {
