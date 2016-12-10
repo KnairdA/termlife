@@ -6,6 +6,8 @@
 #include <tuple>
 #include <cstdint>
 
+#include "box_traverser.h"
+
 namespace life {
 
 template<
@@ -14,19 +16,18 @@ template<
 >
 class World {
 	public:
-		World() {
-			for ( std::size_t j = 0; j < HEIGHT; j++ ) {
-				for ( std::size_t i = 0; i < WIDTH; i++ ) {
-					this->matrix_[j][i] = false;
-				}
-			}
+		static const std::size_t width  = WIDTH;
+		static const std::size_t height = HEIGHT;
+
+		World():
+			area_(width, height) {
+			this->area_.for_each([&](std::size_t i, std::size_t j) {
+				this->matrix_[j][i] = false;
+			});
 		}
 
 		bool isLifeAt(std::ptrdiff_t x, std::ptrdiff_t y) const {
-			if ( x >= 0      &&
-			     x <  WIDTH  &&
-			     y >= 0      &&
-			     y <  HEIGHT ) {
+			if ( this->area_(x, y) ) {
 				return this->matrix_[y][x];
 			} else {
 				return false; // end of world is dead
@@ -69,19 +70,13 @@ class World {
 		}
 
 		void summonLifeAt(std::size_t x, std::size_t y) {
-			if ( x >= 0      &&
-			     x <  WIDTH  &&
-			     y >= 0      &&
-			     y <  HEIGHT ) {
+			if ( this->area_(x, y) ) {
 				this->matrix_[y][x] = true;
 			}
 		}
 
 		void extinguishLifeAt(std::size_t x, std::size_t y) {
-			if ( x >= 0      &&
-			     x <  WIDTH  &&
-			     y >= 0      &&
-			     y <  HEIGHT ) {
+			if ( this->area_(x, y) ) {
 				this->matrix_[y][x] = false;
 			}
 		}
@@ -91,25 +86,23 @@ class World {
 
 			std::stack<std::tuple<std::size_t, std::size_t, bool>> updates;
 
-			for ( std::size_t j = 0; j < HEIGHT; j++ ) {
-				for ( std::size_t i = 0; i < WIDTH; i++ ) {
-					const std::uint8_t d = this->lifeDensityAt(i, j);
+			this->area_.for_each([&](std::size_t i, std::size_t j) {
+				const std::uint8_t d = this->lifeDensityAt(i, j);
 
-					if ( this->matrix_[j][i] ) {
-						if ( d < 2 ) {
-							updates.push(std::make_tuple(i, j, false));	
-						} else if ( d == 2 || d == 3 ) {
-							updates.push(std::make_tuple(i, j, true));	
-						} else if ( d > 3 ) {
-							updates.push(std::make_tuple(i, j, false));	
-						}
-					} else {
-						if ( d == 3 ) {
-							updates.push(std::make_tuple(i, j, true));	
-						}
+				if ( this->matrix_[j][i] ) {
+					if ( d < 2 ) {
+						updates.push(std::make_tuple(i, j, false));
+					} else if ( d == 2 || d == 3 ) {
+						updates.push(std::make_tuple(i, j, true));
+					} else if ( d > 3 ) {
+						updates.push(std::make_tuple(i, j, false));
+					}
+				} else {
+					if ( d == 3 ) {
+						updates.push(std::make_tuple(i, j, true));
 					}
 				}
-			}
+			});
 
 			while ( !updates.empty() ) {
 				const auto& update = updates.top();
@@ -125,14 +118,15 @@ class World {
 						std::get<1>(update)
 					);
 				}
-				
+
 				updates.pop();
 			}
 		}
 
 	private:
-		std::size_t age_ = 0;
+		const util::BoxTraverser area_;
 
+		std::size_t age_ = 0;
 		std::array<std::array<bool, WIDTH>, HEIGHT> matrix_;
 
 };
