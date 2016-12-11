@@ -35,32 +35,16 @@ class World {
 		}
 
 		std::uint8_t lifeDensityAt(std::size_t x, std::size_t y) const {
-			std::uint8_t counter = 0;
+			std::uint8_t counter{};
 
-			if ( this->isLifeAt(x - 1, y) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x + 1, y) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x, y - 1) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x, y + 1) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x - 1, y + 1) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x - 1, y - 1) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x + 1, y + 1) ) {
-				counter++;
-			}
-			if ( this->isLifeAt(x + 1, y - 1) ) {
-				counter++;
-			}
+			counter += this->isLifeAt(x - 1, y);
+			counter += this->isLifeAt(x + 1, y);
+			counter += this->isLifeAt(x,     y - 1);
+			counter += this->isLifeAt(x,     y + 1);
+			counter += this->isLifeAt(x - 1, y + 1);
+			counter += this->isLifeAt(x - 1, y - 1);
+			counter += this->isLifeAt(x + 1, y + 1);
+			counter += this->isLifeAt(x + 1, y - 1);
 
 			return counter;
 		}
