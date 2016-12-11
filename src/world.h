@@ -71,19 +71,19 @@ class World {
 			std::stack<std::tuple<std::size_t, std::size_t, bool>> updates;
 
 			this->area_.for_each([&](std::size_t i, std::size_t j) {
-				const std::uint8_t d = this->lifeDensityAt(i, j);
+				const std::uint8_t d{this->lifeDensityAt(i, j)};
 
 				if ( this->matrix_[j][i] ) {
 					if ( d < 2 ) {
-						updates.push(std::make_tuple(i, j, false));
+						updates.emplace(i, j, false);
 					} else if ( d == 2 || d == 3 ) {
-						updates.push(std::make_tuple(i, j, true));
+						updates.emplace(i, j, true);
 					} else if ( d > 3 ) {
-						updates.push(std::make_tuple(i, j, false));
+						updates.emplace(i, j, false);
 					}
 				} else {
 					if ( d == 3 ) {
-						updates.push(std::make_tuple(i, j, true));
+						updates.emplace(i, j, true);
 					}
 				}
 			});
@@ -110,7 +110,7 @@ class World {
 	private:
 		const util::BoxTraverser area_;
 
-		std::size_t age_ = 0;
+		std::size_t age_{};
 		std::array<std::array<bool, WIDTH>, HEIGHT> matrix_;
 
 };
