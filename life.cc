@@ -12,19 +12,19 @@ void draw(
 	std::size_t y,
 	life::World<WIDTH, HEIGHT>& world
 ) {
+	life::util::BoxTraverser viewport(x, y, WIDTH, HEIGHT);
+
 	tb_clear();
 
-	for ( std::size_t i = 0; i < HEIGHT; i++ ) {
-		for ( std::size_t j = 0; j < WIDTH; j++ ) {
-			const char density{std::to_string(world.lifeDensityAt(j,i))[0]};
+	viewport.for_each([&](std::size_t i, std::size_t j) {
+		const std::uint8_t density{world.lifeDensityAt(i-x, j-y)};
 
-			if ( world.isLifeAt(j,i) ) {
-				tb_change_cell(x+j, y+i, density, TB_BLACK, TB_GREEN);
-			} else {
-				tb_change_cell(x+j, y+i, density, TB_BLACK, TB_BLUE);
-			}
+		if ( world.isLifeAt(i-x, j-y) ) {
+			tb_change_cell(i, j, 48+density, TB_BLACK, TB_GREEN);
+		} else {
+			tb_change_cell(i, j, 48+density, TB_BLACK, TB_BLUE);
 		}
-	}
+	});
 
 	util::print_tb(1, 1, TB_WHITE, TB_DEFAULT, "Age:");
 	util::print_tb(6, 1, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
