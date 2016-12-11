@@ -38,8 +38,8 @@ void draw(
 		}
 	}
 
-	print_tb(x+1, y+21, TB_WHITE, TB_DEFAULT, "Age:");
-	print_tb(x+6, y+21, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
+	print_tb(1, 1, TB_WHITE, TB_DEFAULT, "Age:");
+	print_tb(6, 1, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
 
 	tb_present();
 }
