@@ -1,5 +1,7 @@
 #include "term.h"
 
+#include <system_error>
+
 #include <termbox.h>
 
 namespace util {
@@ -25,6 +27,16 @@ TermGuard::TermGuard() {
 
 TermGuard::~TermGuard() {
 	tb_shutdown();
+}
+
+tb_event TermGuard::poll() const {
+	struct tb_event event;
+
+	if ( tb_poll_event(&event) == -1 ) {
+		throw std::system_error();
+	} else {
+		return event;
+	}
 }
 
 }

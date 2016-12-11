@@ -42,14 +42,9 @@ int main(int, char*[]) {
 	draw(worldOffsetX, worldOffsetY, world);
 
 	while ( true ) {
-		struct tb_event ev;
-		int t = tb_poll_event(&ev);
+		struct tb_event ev{ guard.poll() };
 
-		if ( t == -1 ) {
-			return -1;
-		}
-
-		switch ( t ) {
+		switch ( ev.type ) {
 			case TB_EVENT_KEY:
 				switch ( ev.key ) {
 					case TB_KEY_ESC:
