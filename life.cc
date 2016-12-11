@@ -1,19 +1,7 @@
 #include <termbox.h>
 
 #include "world.h"
-
-void print_tb(
-	std::size_t   x,
-	std::size_t   y,
-	std::uint16_t fg,
-	std::uint16_t bg,
-	const std::string& text
-) {
-	for ( const char& c : text ) {
-		tb_change_cell(x, y, c, fg, bg);
-		x++;
-	}
-}
+#include "util/term.h"
 
 template<
 	std::size_t WIDTH,
@@ -38,18 +26,14 @@ void draw(
 		}
 	}
 
-	print_tb(1, 1, TB_WHITE, TB_DEFAULT, "Age:");
-	print_tb(6, 1, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
+	util::print_tb(1, 1, TB_WHITE, TB_DEFAULT, "Age:");
+	util::print_tb(6, 1, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
 
 	tb_present();
 }
 
 int main(int, char*[]) {
-	tb_init();
-
-	tb_select_output_mode(TB_OUTPUT_NORMAL);
-	tb_select_input_mode(TB_INPUT_ESC | TB_INPUT_MOUSE);
-
+	util::TermGuard    guard;
 	life::World<40,20> world;
 
 	std::size_t worldOffsetX = tb_width()  / 2 - world.width  / 2;
@@ -62,7 +46,6 @@ int main(int, char*[]) {
 		int t = tb_poll_event(&ev);
 
 		if ( t == -1 ) {
-			tb_shutdown();
 			return -1;
 		}
 
@@ -70,7 +53,6 @@ int main(int, char*[]) {
 			case TB_EVENT_KEY:
 				switch ( ev.key ) {
 					case TB_KEY_ESC:
-						tb_shutdown();
 						return 0;
 					case TB_KEY_SPACE:
 						world.tick();
