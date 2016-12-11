@@ -1,5 +1,5 @@
-#ifndef LIFE_SRC_BOX_INDICATOR_
-#define LIFE_SRC_BOX_INDICATOR_
+#ifndef LIFE_SRC_UTIL_BOX_INDICATOR_
+#define LIFE_SRC_UTIL_BOX_INDICATOR_
 
 namespace life {
 namespace util {
@@ -25,7 +25,7 @@ class BoxIndicator {
 			    && y >= this->a_y_
 			    && y <  this->b_y_;
 		}
-	
+
 	protected:
 		const std::size_t a_x_;
 		const std::size_t a_y_;
@@ -33,8 +33,8 @@ class BoxIndicator {
 		const std::size_t b_y_;
 
 };
-		
+
 }
 }
 
-#endif  // LIFE_SRC_BOX_INDICATOR_
+#endif  // LIFE_SRC_UTIL_BOX_INDICATOR_

@@ -1,5 +1,5 @@
-#ifndef LIFE_SRC_BOX_TRAVERSER_
-#define LIFE_SRC_BOX_TRAVERSER_
+#ifndef LIFE_SRC_UTIL_BOX_TRAVERSER_
+#define LIFE_SRC_UTIL_BOX_TRAVERSER_
 
 #include <functional>
 
@@ -23,4 +23,4 @@ struct BoxTraverser : public BoxIndicator {
 }
 }
 
-#endif  // LIFE_SRC_BOX_TRAVERSER_
+#endif  // LIFE_SRC_UTIL_BOX_TRAVERSER_

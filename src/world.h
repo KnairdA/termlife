@@ -6,7 +6,7 @@
 #include <tuple>
 #include <cstdint>
 
-#include "box_traverser.h"
+#include "util/box_traverser.h"
 
 namespace life {
 
