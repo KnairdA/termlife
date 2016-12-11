@@ -22,7 +22,11 @@ void draw(
 		if ( world.isLifeAt(i-x, j-y) ) {
 			tb_change_cell(i, j, 48+density, TB_BLACK, TB_GREEN);
 		} else {
-			tb_change_cell(i, j, 48+density, TB_BLACK, TB_BLUE);
+			if ( density == 0 ) {
+				tb_change_cell(i, j, ' ', TB_BLACK, TB_BLUE);
+			} else {
+				tb_change_cell(i, j, 48+density, TB_BLACK, TB_BLUE);
+			}
 		}
 	});
 
