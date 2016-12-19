@@ -53,15 +53,25 @@ class World {
 			return this->age_;
 		}
 
+		std::size_t getPopulation() const {
+			return this->population_;
+		}
+
 		void summonLifeAt(std::size_t x, std::size_t y) {
 			if ( this->area_(x, y) ) {
-				this->matrix_[y][x] = true;
+				if ( !this->matrix_[y][x] ) {
+					this->matrix_[y][x] = true;
+					this->population_  += 1;
+				}
 			}
 		}
 
 		void extinguishLifeAt(std::size_t x, std::size_t y) {
 			if ( this->area_(x, y) ) {
-				this->matrix_[y][x] = false;
+				if ( this->matrix_[y][x] ) {
+					this->matrix_[y][x] = false;
+					this->population_  -= 1;
+				}
 			}
 		}
 
@@ -111,6 +121,7 @@ class World {
 		const util::BoxTraverser area_;
 
 		std::size_t age_{};
+		std::size_t population_{};
 		std::array<std::array<bool, WIDTH>, HEIGHT> matrix_;
 
 };
