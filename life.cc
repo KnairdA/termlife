@@ -41,7 +41,7 @@ void draw(
 
 int main(int, char*[]) {
 	util::TermGuard    guard;
-	life::World<60,40> world;
+	life::World<80,40> world;
 
 	std::size_t worldOffsetX = tb_width()  / 2 - world.width  / 2;
 	std::size_t worldOffsetY = tb_height() / 2 - world.height / 2;

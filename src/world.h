@@ -1,12 +1,12 @@
 #ifndef LIFE_SRC_WORLD_H_
 #define LIFE_SRC_WORLD_H_
 
-#include <array>
 #include <stack>
 #include <tuple>
 #include <cstdint>
 
 #include "util/box_traverser.h"
+#include "util/torus_array.h"
 
 namespace life {
 
@@ -22,19 +22,16 @@ class World {
 		World():
 			area_(width, height) {
 			this->area_.for_each([&](std::size_t i, std::size_t j) {
-				this->matrix_[j][i] = false;
+				this->matrix_.set(i, j, false);
 			});
 		}
 
-		bool isLifeAt(std::ptrdiff_t x, std::ptrdiff_t y) const {
-			if ( this->area_(x, y) ) {
-				return this->matrix_[y][x];
-			} else {
-				return false; // end of world is dead
-			}
+		bool isLifeAt(const std::ptrdiff_t x, const std::ptrdiff_t y) const {
+			return this->matrix_.get(x, y);
 		}
 
-		std::uint8_t lifeDensityAt(std::size_t x, std::size_t y) const {
+		std::uint8_t lifeDensityAt(
+			const std::ptrdiff_t x, const std::ptrdiff_t y) const {
 			std::uint8_t counter{};
 
 			counter += this->isLifeAt(x - 1, y);
@@ -57,20 +54,20 @@ class World {
 			return this->population_;
 		}
 
-		void summonLifeAt(std::size_t x, std::size_t y) {
+		void summonLifeAt(const std::ptrdiff_t x, const std::ptrdiff_t y) {
 			if ( this->area_(x, y) ) {
-				if ( !this->matrix_[y][x] ) {
-					this->matrix_[y][x] = true;
-					this->population_  += 1;
+				if ( !this->matrix_.get(x, y) ) {
+					this->matrix_.set(x, y, true);
+					this->population_ += 1;
 				}
 			}
 		}
 
-		void extinguishLifeAt(std::size_t x, std::size_t y) {
+		void extinguishLifeAt(const std::ptrdiff_t x, const std::ptrdiff_t y) {
 			if ( this->area_(x, y) ) {
-				if ( this->matrix_[y][x] ) {
-					this->matrix_[y][x] = false;
-					this->population_  -= 1;
+				if ( this->matrix_.get(x, y) ) {
+					this->matrix_.set(x, y, false);
+					this->population_ -= 1;
 				}
 			}
 		}
@@ -83,7 +80,7 @@ class World {
 			this->area_.for_each([&](std::size_t i, std::size_t j) {
 				const std::uint8_t d{this->lifeDensityAt(i, j)};
 
-				if ( this->matrix_[j][i] ) {
+				if ( this->matrix_.get(i, j) ) {
 					if ( d < 2 ) {
 						updates.emplace(i, j, false);
 					} else if ( d == 2 || d == 3 ) {
@@ -122,7 +119,7 @@ class World {
 
 		std::size_t age_{};
 		std::size_t population_{};
-		std::array<std::array<bool, WIDTH>, HEIGHT> matrix_;
+		util::TorusArray<bool, WIDTH, HEIGHT> matrix_;
 
 };
 
