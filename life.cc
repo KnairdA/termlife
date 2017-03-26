@@ -30,10 +30,10 @@ void draw(
 		}
 	});
 
-	util::print_tb(1, 1, TB_WHITE, TB_DEFAULT, "Age:");
+	util::print_tb(1,  1, TB_WHITE, TB_DEFAULT, "Age:");
 	util::print_tb(13, 1, TB_WHITE, TB_DEFAULT, std::to_string(world.getAge()));
 
-	util::print_tb(1, 2, TB_WHITE, TB_DEFAULT, "Population:");
+	util::print_tb(1,  2, TB_WHITE, TB_DEFAULT, "Population:");
 	util::print_tb(13, 2, TB_WHITE, TB_DEFAULT, std::to_string(world.getPopulation()));
 
 	tb_present();

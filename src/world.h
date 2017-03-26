@@ -6,7 +6,7 @@
 #include <cstdint>
 
 #include "util/box_traverser.h"
-#include "util/torus_array.h"
+#include "util/torus_matrix.h"
 
 namespace life {
 
@@ -117,9 +117,9 @@ class World {
 	private:
 		const util::BoxTraverser area_;
 
+		util::TorusMatrix<bool, WIDTH, HEIGHT> matrix_;
 		std::size_t age_{};
 		std::size_t population_{};
-		util::TorusArray<bool, WIDTH, HEIGHT> matrix_;
 
 };
 

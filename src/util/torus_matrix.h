@@ -1,5 +1,5 @@
-#ifndef LIFE_SRC_UTIL_TORUS_ARRAY_
-#define LIFE_SRC_UTIL_TORUS_ARRAY_
+#ifndef LIFE_SRC_UTIL_TORUS_MATRIX_
+#define LIFE_SRC_UTIL_TORUS_MATRIX_
 
 #include <array>
 #include <cstdint>
@@ -12,7 +12,7 @@ template<
 	std::size_t WIDTH,
 	std::size_t HEIGHT
 >
-class TorusArray {
+class TorusMatrix {
 	static std::size_t toMatrixColumn(const std::ptrdiff_t x) {
 		if ( x >= 0 ) {
 			return x % WIDTH;
@@ -49,4 +49,4 @@ class TorusArray {
 }
 }
 
-#endif  // LIFE_SRC_UTIL_TORUS_ARRAY_
+#endif  // LIFE_SRC_UTIL_TORUS_MATRIX_
